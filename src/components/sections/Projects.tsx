@@ -5,11 +5,11 @@ import { SectionHeader } from "@/components/layout/Header";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ProjectMockup } from "@/components/ui/ProjectMockup";
 
-type Variant = "twin" | "robot" | "visai";
+type Variant = "twin" | "fixit" | "robot" | "visai";
 
 export function Projects({ projectImages }: { projectImages: Record<string, boolean> }) {
   const { t } = useI18n();
-  const variants: Variant[] = ["twin", "robot", "visai"];
+    const variants: Variant[] = ["twin", "fixit", "robot", "visai"];
 
   return (
     <section id="projects" className="relative py-24 sm:py-32">
@@ -29,29 +29,14 @@ export function Projects({ projectImages }: { projectImages: Record<string, bool
 
             return (
               <ScrollReveal key={p.id} delay={80}>
-                <article
-                  className={[
-                    "grid lg:grid-cols-12 gap-8 lg:gap-12 items-center",
-                    featured ? "" : "",
-                  ].join(" ")}
-                >
+                <article className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                   {/* Visual */}
-                  <div
-                    className={[
-                      featured ? "lg:col-span-7" : "lg:col-span-6",
-                      reverse ? "lg:order-2" : "",
-                    ].join(" ")}
-                  >
+                  <div className={featured ? "lg:col-span-7" : `lg:col-span-6${reverse ? " lg:order-2" : ""}`}>
                     <ProjectMockup id={p.id} variant={v} hasImage={!!projectImages[p.id]} />
                   </div>
 
                   {/* Copy */}
-                  <div
-                    className={[
-                      featured ? "lg:col-span-5" : "lg:col-span-6",
-                      reverse ? "lg:order-1" : "",
-                    ].join(" ")}
-                  >
+                  <div className={featured ? "lg:col-span-5" : `lg:col-span-6${reverse ? " lg:order-1" : ""}`}>
                     <div className="flex items-center gap-3 mb-3">
                       <span className="mono text-xs text-ink-500">#{p.number}</span>
                       <span className="h-px flex-1 bg-ink-700/60" />

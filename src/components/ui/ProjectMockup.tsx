@@ -5,7 +5,7 @@ import { useState } from "react";
 
 type Props = {
   id: string;
-  variant: "twin" | "robot" | "visai";
+  variant: "twin" | "fixit" | "robot" | "visai";
   /** Resolved at build time (existsSync) so we never request a missing asset. */
   hasImage?: boolean;
 };
@@ -43,6 +43,7 @@ export function ProjectMockup({ id, variant, hasImage = false }: Props) {
 
 function Placeholder({ variant }: { variant: Props["variant"] }) {
   if (variant === "twin") return <TwinArt />;
+  if (variant === "fixit") return <FixitArt />;
   if (variant === "robot") return <RobotArt />;
   return <VisAIArt />;
 }
@@ -270,6 +271,99 @@ function VisAIArt() {
       <g fontFamily="JetBrains Mono, monospace" fontSize="9" fill="#73849b">
         <text x="40" y="340">VISAI // ACCESSIBILITY ASSISTANT</text>
         <text x="40" y="356">MODE: TEA-AWARE · MULTIMODAL</text>
+      </g>
+    </svg>
+  );
+}
+
+/* ---------- JD Fixit — CAN Bus Diagnostic Flow ---------- */
+function FixitArt() {
+  return (
+    <svg viewBox="0 0 640 400" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="fixit-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#0b0e13" />
+          <stop offset="1" stopColor="#0f131a" />
+        </linearGradient>
+        <pattern id="fixit-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1b2330" strokeWidth="0.3" />
+        </pattern>
+      </defs>
+      <rect width="640" height="400" fill="url(#fixit-bg)" />
+      <rect width="640" height="400" fill="url(#fixit-grid)" opacity="0.4" />
+
+      {/* Top: machine → CAN acquisition flow */}
+      <g transform="translate(30, 30)">
+        <rect x="0" y="20" width="60" height="50" rx="4" fill="#141a23" stroke="#4e5e75" strokeWidth="1" />
+        <text x="30" y="50" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#73849b" textAnchor="middle">HARVESTER</text>
+        <text x="30" y="15" fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#ffae5c" textAnchor="middle">J1939 CAN</text>
+        <line x1="65" y1="45" x2="100" y2="45" stroke="#86f77a" strokeWidth="1" strokeDasharray="3 2" />
+        <polygon points="100,41 108,45 100,49" fill="#86f77a" />
+        <rect x="110" y="25" width="70" height="40" rx="3" fill="#1b2330" stroke="#5cc7b9" strokeWidth="1" />
+        <text x="145" y="49" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#5cc7b9" textAnchor="middle">ESP32</text>
+        <line x1="183" y1="45" x2="218" y2="45" stroke="#86f77a" strokeWidth="1" strokeDasharray="3 2" />
+        <polygon points="218,41 226,45 218,49" fill="#86f77a" />
+        <rect x="228" y="20" width="80" height="50" rx="4" fill="#141a23" stroke="#86f77a" strokeWidth="1" />
+        <text x="268" y="42" fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#cdd6e3" textAnchor="middle">ORCHESTRATOR</text>
+        <text x="268" y="54" fontFamily="JetBrains Mono, monospace" fontSize="6" fill="#73849b" textAnchor="middle">WebSocket</text>
+        <line x1="311" y1="45" x2="346" y2="45" stroke="#86f77a" strokeWidth="1" strokeDasharray="3 2" />
+        <polygon points="346,41 354,45 346,49" fill="#86f77a" />
+        <rect x="356" y="15" width="80" height="60" rx="6" fill="#07090c" stroke="#5cc7b9" strokeWidth="1.5" />
+        <text x="396" y="48" fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#5cc7b9" textAnchor="middle">IPAD</text>
+        <text x="396" y="60" fontFamily="JetBrains Mono, monospace" fontSize="6" fill="#73849b" textAnchor="middle">PWA</text>
+      </g>
+
+      {/* Bottom: Brain / FSM / RAG core */}
+      <g transform="translate(30, 160)">
+        <text x="0" y="0" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="#73849b">DETERMINISTIC BRAIN</text>
+        <line x1="0" y1="6" x2="580" y2="6" stroke="#26303f" strokeWidth="0.5" />
+        <g transform="translate(0, 25)">
+          <rect x="0" y="0" width="90" height="40" rx="20" fill="#07090c" stroke="#86f77a" strokeWidth="1" />
+          <text x="45" y="24" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#86f77a" textAnchor="middle">IDLE</text>
+          <line x1="95" y1="20" x2="125" y2="20" stroke="#4e5e75" strokeWidth="1" />
+          <polyline points="125,16 135,20 125,24" fill="none" stroke="#4e5e75" strokeWidth="1" />
+          <rect x="130" y="0" width="90" height="40" rx="20" fill="#07090c" stroke="#5cc7b9" strokeWidth="1" />
+          <text x="175" y="24" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#5cc7b9" textAnchor="middle">DIAGNOSE</text>
+          <line x1="225" y1="20" x2="255" y2="20" stroke="#4e5e75" strokeWidth="1" />
+          <polyline points="255,16 265,20 255,24" fill="none" stroke="#4e5e75" strokeWidth="1" />
+          <rect x="260" y="0" width="90" height="40" rx="20" fill="#07090c" stroke="#ffae5c" strokeWidth="1" />
+          <text x="305" y="24" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#ffae5c" textAnchor="middle">GUIDE REPAIR</text>
+          <line x1="355" y1="20" x2="385" y2="20" stroke="#4e5e75" strokeWidth="1" />
+          <polyline points="385,16 395,20 385,24" fill="none" stroke="#4e5e75" strokeWidth="1" />
+          <rect x="390" y="0" width="90" height="40" rx="20" fill="#07090c" stroke="#ff6b6b" strokeWidth="1" />
+          <text x="435" y="24" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#ff6b6b" textAnchor="middle">ESCALATE</text>
+        </g>
+        <rect x="0" y="80" width="580" height="30" rx="4" fill="none" stroke="#ff6b6b" strokeWidth="0.5" strokeDasharray="4 2" opacity="0.5" />
+        <text x="10" y="100" fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#ff6b6b">SAFETY GUARDRAIL — LLM CANNOT CONTROL EXECUTION PATH</text>
+        <g transform="translate(0, 130)">
+          <rect x="0" y="0" width="580" height="120" rx="6" fill="#07090c" stroke="#26303f" />
+          <text x="12" y="20" fontFamily="JetBrains Mono, monospace" fontSize="9" fill="#5cc7b9">RAG KNOWLEDGE BASE · ChromaDB · nomic-embed-text</text>
+          <text x="12" y="38" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#73849b">Manual: 1270G Service Guide · 401 pages ingested · 16 verified codes with page citations</text>
+          <g fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#4e5e75">
+            <text x="12" y="60">[DOC] §4.3.7 — Hydraulic pressure anomaly threshold...</text>
+            <text x="12" y="74">[DOC] §7.1.2 — Valve seal wear tolerance (ISO 4414)</text>
+            <text x="12" y="88">[DOC] §12.5 — Emergency shutdown procedures</text>
+            <text x="12" y="102">[RESULT] Code 3221 → §7.1.2 p.318 · Confidence 0.94 · Plan: REPLACE VVS-02</text>
+          </g>
+          <g transform="translate(340, 10)">
+            <text fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#73849b">SQLite Session Store</text>
+            <text x="12" y="16" fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#4e5e75">&#123;session_id&#125;: step=3, cmd=&quot;REPLACE_VVS_02&quot;</text>
+            <text x="12" y="30" fontFamily="JetBrains Mono, monospace" fontSize="7" fill="#4e5e75">WS broadcast → reconnect_replay()</text>
+            <text x="0" y="56" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#73849b">Audit Log (JSONL)</text>
+            <text x="12" y="72" fontFamily="JetBrains Mono, monospace" fontSize="6" fill="#354255">&#123;ts:..., q:&quot;Code 3221...&quot;, a:&#123;checklist:[...], steps:[...]&#125;&#125;</text>
+            <text x="12" y="84" fontFamily="JetBrains Mono, monospace" fontSize="6" fill="#354255">&#123;ts:..., t:0.0, schema:&quot;pydantic_structured&quot;&#125;</text>
+          </g>
+        </g>
+      </g>
+
+      {/* Verification badges */}
+      <g transform="translate(30, 350)">
+        <rect x="0" y="0" width="140" height="28" rx="14" fill="#07090c" stroke="#86f77a" strokeWidth="0.5" />
+        <text x="70" y="18" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#86f77a" textAnchor="middle">22/22 DETERMINISTIC OK</text>
+        <rect x="155" y="0" width="155" height="28" rx="14" fill="#07090c" stroke="#5cc7b9" strokeWidth="0.5" />
+        <text x="232" y="18" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#5cc7b9" textAnchor="middle">401-PAGE MANUAL INGESTED</text>
+        <rect x="322" y="0" width="130" height="28" rx="14" fill="#07090c" stroke="#ffae5c" strokeWidth="0.5" />
+        <text x="387" y="18" fontFamily="JetBrains Mono, monospace" fontSize="8" fill="#ffae5c" textAnchor="middle">LOCAL · NO SIGNAL NEEDED</text>
       </g>
     </svg>
   );

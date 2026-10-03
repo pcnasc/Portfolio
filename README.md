@@ -16,7 +16,7 @@ Site bilíngue **PT-BR / EN** com estética *dark dev/terminal*, construído com
 
 ## Funcionalidades
 
-- **Hero tipo terminal** com efeito de digitação, cursor piscando, relógio UTC vivo e retrato do Pedro enquadrado como um *feed* de terminal.
+- **Hero tipo terminal** com efeito de digitação, cursor piscando e retrato do Pedro enquadrado como um *feed* de terminal.
 - **Seções**: Sobre mim, Experiência (timeline), Projetos em Destaque (layout editorial assimétrico), Repositórios (dinâmico) e Matriz de Competências.
 - **i18n PT-BR/EN** com toggle no header, persistência em `localStorage` e sincronização do `<html lang>`. Padrão: PT-BR. Sem roteamento por URL (toggle client-side).
 - **Repositórios via GitHub API** (`api.github.com/users/pcnasc/repos`) com **ISR** (revalidação de 1h), exclusão de forks, ordenação por stars/recência e **fallback** estático elegante caso a API falhe ou esteja em rate-limit.

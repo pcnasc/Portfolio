@@ -11,26 +11,12 @@ export function Hero() {
   const [reduced, setReduced] = useState<boolean>(() =>
     typeof window !== "undefined" ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false
   );
-  const [clock, setClock] = useState("");
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => setReduced(mq.matches);
     mq.addEventListener?.("change", apply);
     return () => mq.removeEventListener?.("change", apply);
-  }, []);
-
-  useEffect(() => {
-    const update = () => {
-      const d = new Date();
-      const hh = String(d.getUTCHours()).padStart(2, "0");
-      const mm = String(d.getUTCMinutes()).padStart(2, "0");
-      const ss = String(d.getUTCSeconds()).padStart(2, "0");
-      setClock(`${hh}:${mm}:${ss} UTC`);
-    };
-    update();
-    const id = window.setInterval(update, 1000);
-    return () => window.clearInterval(id);
   }, []);
 
   const typingLines = [
@@ -55,9 +41,6 @@ export function Hero() {
                 <span className="w-3 h-3 rounded-full bg-phosphor-400/80" />
                 <span className="mono text-[0.7rem] text-ink-400 ml-3 flex-1 text-center">
                   {t.hero.promptUser}:{t.hero.promptPath}$ — zsh — 100×24
-                </span>
-                <span className="mono text-[0.65rem] text-ink-500 hidden sm:block">
-                  {clock}
                 </span>
               </div>
 
@@ -138,7 +121,7 @@ export function Hero() {
                 {/* Stack chips */}
                 <div className="mt-8 pt-6 border-t border-ink-700/40">
                   <div className="flex flex-wrap gap-1.5">
-                    {["Go", "Java", "Kafka", "Postgres", "GCP", "YOLO"].map((s) => (
+                    {["Go", "Elixir", "Kafka", "J1939 CAN", "ChromaDB", "Postgres"].map((s) => (
                       <span key={s} className="chip">
                         <span className="w-1 h-1 rounded-full bg-phosphor-400" />
                         {s}
@@ -195,13 +178,6 @@ export function Hero() {
                         className="object-cover object-top portrait-img"
                         priority
                       />
-                    </div>
-                    {/* Live clock tag — bottom-left */}
-                    <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-ink-950/80 border border-ink-700/50 backdrop-blur-sm">
-                      <span className="w-1 h-1 rounded-full bg-phosphor-400 animate-pulseDot" />
-                      <span className="mono text-[0.6rem] text-ink-300 tabular-nums">
-                        {clock}
-                      </span>
                     </div>
                   </div>
                 </div>
