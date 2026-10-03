@@ -7,6 +7,7 @@ import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
 import { Repos } from "@/components/sections/Repos";
 import { Skills } from "@/components/sections/Skills";
+import { ContributionSnake } from "@/components/ui/ContributionSnake";
 
 export default function Home() {
   // Resolve which project screenshots actually exist at build time so the
@@ -27,6 +28,7 @@ export default function Home() {
       <Projects projectImages={projectImages} />
       <Repos />
       <Skills />
+      <ContributionSnake className="max-w-3xl mx-auto px-5 sm:px-8" rows={8} speed={0.8} theme="dark" />
     </>
   );
 }
