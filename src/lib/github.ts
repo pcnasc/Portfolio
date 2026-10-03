@@ -13,6 +13,15 @@ export type GitHubPayload = {
   source: "api" | "fallback";
 };
 
+export const CURATED_REPOS = [
+  "panoramic-dental-data",
+  "micrograd",
+  "incubadora-fiap",
+  "SmartRecycle",
+  "PneumaticSim",
+  "Ocean_Monitoring_System.GS24",
+];
+
 const FALLBACK_NAMES = [
   "festo-digital-twin",
   "visai",
@@ -62,34 +71,27 @@ function makeFallback(): Repo[] {
 
 export async function fetchRepos(): Promise<GitHubPayload> {
   try {
-    const res = await fetch("https://api.github.com/users/pcnasc/repos?per_page=100&type=owner", {
-      next: { revalidate: 3600 },
-      headers: {
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    });
-    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-    const raw = (await res.json()) as Array<Record<string, unknown>>;
-    if (!Array.isArray(raw)) throw new Error("Unexpected payload");
-
-    const repos: Repo[] = raw
-      .filter((r) => r.fork !== true)
-      .map((r) => ({
-        name: String(r.name ?? ""),
-        description: (r.description as string | null) ?? null,
-        language: (r.language as string | null) ?? null,
-        stargazers_count: Number(r.stargazers_count ?? 0),
-        forks_count: Number(r.forks_count ?? 0),
-        html_url: String(r.html_url ?? ""),
-        updated_at: String(r.updated_at ?? ""),
-      }))
-      .filter((r) => r.name)
-      .sort((a, b) => {
-        if (b.stargazers_count !== a.stargazers_count) return b.stargazers_count - a.stargazers_count;
-        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-      })
-      .slice(0, 6);
+    const repos: Repo[] = [];
+    for (const slug of CURATED_REPOS) {
+      const r = await fetch(`https://api.github.com/repos/pcnasc/${slug}`, {
+        next: { revalidate: 3600 },
+        headers: {
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+      if (!r.ok) continue;
+      const raw = (await r.json()) as Record<string, unknown>;
+      repos.push({
+        name: String(raw.name ?? slug),
+        description: (raw.description as string | null) ?? null,
+        language: (raw.language as string | null) ?? null,
+        stargazers_count: Number(raw.stargazers_count ?? 0),
+        forks_count: Number(raw.forks_count ?? 0),
+        html_url: String(raw.html_url ?? `https://github.com/pcnasc/${slug}`),
+        updated_at: String(raw.updated_at ?? ""),
+      });
+    }
 
     return { repos, source: repos.length ? "api" : "fallback" };
   } catch {
