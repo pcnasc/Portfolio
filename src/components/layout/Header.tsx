@@ -1,154 +1,214 @@
 "use client";
 
-import { useI18n } from "@/lib/i18n";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useEffect, useState } from "react";
+import { useI18n, type Locale } from "@/lib/i18n";
+import { getLenis } from "@/lib/scroll";
+import { AnchorLink } from "@/components/ui/links";
+import { EASE } from "@/components/motion/primitives";
 
-const ANCHORS = [
-  { key: "about" as const, id: "about" },
-  { key: "experience" as const, id: "experience" },
-  { key: "projects" as const, id: "projects" },
-  { key: "repos" as const, id: "repos" },
-  { key: "skills" as const, id: "skills" },
-];
+const LINKS = [
+  { key: "about", id: "about" },
+  { key: "work", id: "work" },
+  { key: "experience", id: "experience" },
+  { key: "capabilities", id: "capabilities" },
+  { key: "contact", id: "contact" },
+] as const;
+
+function LocaleToggle({ className = "" }: { className?: string }) {
+  const { locale, setLocale } = useI18n();
+  return (
+    <div role="group" aria-label="Language" className={`flex items-center gap-1.5 text-[0.72rem] tracking-[0.18em] ${className}`}>
+      {(["pt", "en"] as Locale[]).map((l, i) => (
+        <span key={l} className="flex items-center gap-1.5">
+          {i > 0 && <span className="text-cream-500">/</span>}
+          <button
+            id={`locale-${l}`}
+            type="button"
+            onClick={() => setLocale(l)}
+            aria-pressed={locale === l}
+            className={`uppercase transition-colors duration-300 ${
+              locale === l ? "text-cream-50" : "text-cream-500 hover:text-cream-200"
+            }`}
+          >
+            {l}
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export function Header() {
-  const { locale, setLocale, t } = useI18n();
+  const { t } = useI18n();
+  const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  const [activeId, setActiveId] = useState<string>("");
+  const [active, setActive] = useState<string>("");
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 24));
 
+  // Highlight the section currently crossing the middle of the viewport.
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveId(visible.target.id);
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
       },
-      { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { rootMargin: "-45% 0px -50% 0px" }
     );
-    ANCHORS.forEach((a) => {
-      const el = document.getElementById(a.id);
+    ["top", ...LINKS.map((l) => l.id)].forEach((id) => {
+      const el = document.getElementById(id);
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
   }, []);
 
+  // Lock scroll while the mobile menu is open.
+  useEffect(() => {
+    const lenis = getLenis();
+    if (open) {
+      lenis?.stop();
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      lenis?.start();
+      document.documentElement.style.overflow = "";
+    }
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
-    <header
-      className={[
-        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
-        scrolled
-          ? "backdrop-blur-md bg-ink-950/70 border-b border-ink-700/50"
-          : "bg-transparent border-b border-transparent",
-      ].join(" ")}
-    >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 group">
-          <span className="w-2 h-2 rounded-full bg-phosphor-400 animate-pulseDot shadow-[0_0_10px_var(--color-phosphor-400)]" />
-          <span className="mono text-[0.78rem] text-ink-200 group-hover:text-phosphor-300 transition-colors">
-            <span className="text-phosphor-400">~</span>
-            <span className="text-ink-400">/</span>
-            <span>pedro</span>
-          </span>
-        </a>
-
-        <nav className="hidden md:flex items-center gap-1">
-          {ANCHORS.map((a) => {
-            const isActive = activeId === a.id;
-            return (
-              <a
-                key={a.id}
-                href={`#${a.id}`}
-                className={[
-                  "mono text-[0.78rem] px-3 py-1.5 rounded-full transition-all",
-                  isActive
-                    ? "text-phosphor-300 bg-phosphor-400/10"
-                    : "text-ink-300 hover:text-ink-50 hover:bg-ink-800/50",
-                ].join(" ")}
-              >
-                <span className="text-ink-500 mr-1">{ANCHORS.indexOf(a) + 1}.</span>
-                {t.nav[a.key]}
-              </a>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <div
-            role="group"
-            aria-label="Language"
-            className="mono text-[0.72rem] flex items-center rounded-full border border-ink-600/70 bg-ink-900/70 p-0.5"
+    <>
+      <motion.header
+        initial={{ y: -24, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
+          scrolled && !open
+            ? "border-b border-cream-100/[0.07] bg-coal-900/70 backdrop-blur-xl backdrop-saturate-150"
+            : "border-b border-transparent"
+        }`}
+      >
+        <div className="container-x flex h-[72px] items-center justify-between">
+          <AnchorLink
+            href="#top"
+            id="nav-home"
+            onNavigate={() => setOpen(false)}
+            className="group flex items-baseline gap-3"
+            aria-label="Pedro Nascimento — home"
           >
-            {(["pt", "en"] as const).map((l) => (
-              <button
-                key={l}
-                type="button"
-                onClick={() => setLocale(l)}
-                className={[
-                  "px-2.5 py-1 rounded-full transition-all uppercase tracking-wider",
-                  locale === l
-                    ? "bg-phosphor-400 text-ink-950 font-medium"
-                    : "text-ink-300 hover:text-ink-50",
-                ].join(" ")}
+            <span className="font-serif text-[1.65rem] leading-none tracking-[-0.03em] text-cream-50">PN</span>
+            <span
+              className={`hidden text-[0.8rem] tracking-[0.02em] text-cream-300 transition-all duration-700 ease-[var(--ease-apple)] sm:inline ${
+                scrolled ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"
+              }`}
+            >
+              Pedro Nascimento
+            </span>
+          </AnchorLink>
+
+          <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
+            {LINKS.map((l) => (
+              <AnchorLink
+                key={l.id}
+                id={`nav-${l.id}`}
+                href={`#${l.id}`}
+                className={`relative px-3.5 py-2 text-[0.84rem] tracking-[0.01em] transition-colors duration-300 ${
+                  active === l.id ? "text-cream-50" : "text-cream-300 hover:text-cream-50"
+                }`}
               >
-                {l}
-              </button>
+                {t.nav[l.key]}
+                {active === l.id && (
+                  <motion.span
+                    layoutId="nav-dot"
+                    className="absolute bottom-0.5 left-1/2 h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-brass-400"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+              </AnchorLink>
             ))}
+          </nav>
+
+          <div className="flex items-center gap-6">
+            <LocaleToggle className="hidden md:flex" />
+            <button
+              id="menu-toggle"
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              className="flex items-center gap-3 text-[0.8rem] tracking-[0.04em] text-cream-100 md:hidden"
+            >
+              <span>{open ? t.nav.close : t.nav.menu}</span>
+              <span className="relative block h-2.5 w-5">
+                <span
+                  className={`absolute left-0 h-px w-5 bg-current transition-all duration-500 ease-[var(--ease-apple)] ${
+                    open ? "top-1/2 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 h-px w-5 bg-current transition-all duration-500 ease-[var(--ease-apple)] ${
+                    open ? "top-1/2 -rotate-45" : "top-full"
+                  }`}
+                />
+              </span>
+            </button>
           </div>
         </div>
-      </div>
-    </header>
-  );
-}
+      </motion.header>
 
-export function Footer() {
-  const { t } = useI18n();
-  const year = new Date().getFullYear();
-  return (
-    <footer className="relative border-t border-ink-700/50 mt-16 sm:mt-20">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="mono text-xs text-ink-400">
-          <span className="text-phosphor-400">❯</span> {t.footer.built}
-        </div>
-        <div className="mono text-xs text-ink-400">
-          {t.footer.copyright.replace("{year}", String(year))}
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-export function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="section-label flex items-center gap-2 mb-4">
-      <span className="w-6 h-px bg-ink-500" />
-      <span>{children}</span>
-    </div>
-  );
-}
-
-export function SectionHeader({
-  label,
-  title,
-  id,
-}: {
-  label: string;
-  title: string;
-  id: string;
-}) {
-  return (
-    <div className="mb-10" id={id}>
-      <SectionLabel>{label}</SectionLabel>
-      <h2 className="display text-3xl sm:text-4xl md:text-5xl text-ink-50 tracking-tight">
-        {title}
-      </h2>
-    </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="mobile-menu"
+            key="menu"
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="fixed inset-0 z-40 flex flex-col bg-coal-950 px-6 pb-10 pt-28 md:hidden"
+          >
+            <nav aria-label="Mobile" className="flex flex-col">
+              {LINKS.map((l, i) => (
+                <div key={l.id} className="overflow-hidden border-b border-cream-100/[0.07]">
+                  <motion.div
+                    initial={{ y: "100%" }}
+                    animate={{ y: "0%" }}
+                    exit={{ y: "100%" }}
+                    transition={{ duration: 0.8, ease: EASE, delay: 0.15 + i * 0.06 }}
+                  >
+                    <AnchorLink
+                      href={`#${l.id}`}
+                      onNavigate={() => setOpen(false)}
+                      className="flex items-baseline justify-between py-4"
+                    >
+                      <span className="font-serif text-[2.6rem] leading-none tracking-[-0.02em] text-cream-50">
+                        {t.nav[l.key]}
+                      </span>
+                      <span className="text-[0.7rem] tracking-[0.2em] text-cream-500">0{i + 1}</span>
+                    </AnchorLink>
+                  </motion.div>
+                </div>
+              ))}
+            </nav>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-auto flex items-center justify-between"
+            >
+              <LocaleToggle />
+              <a href="mailto:pedroeng.nascimento@gmail.com" className="text-[0.85rem] text-cream-300">
+                pedroeng.nascimento@gmail.com
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

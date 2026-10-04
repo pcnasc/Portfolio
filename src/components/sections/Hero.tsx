@@ -1,189 +1,135 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 import { useI18n } from "@/lib/i18n";
-import { TypingText } from "@/components/ui/TypingText";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { useEffect, useState } from "react";
+import { EASE, MaskLines, Reveal } from "@/components/motion/primitives";
+import { AnchorLink, ArrowRight } from "@/components/ui/links";
+import portrait from "../../../public/pedro.jpg";
 
 export function Hero() {
   const { t } = useI18n();
-  const [reduced, setReduced] = useState<boolean>(() =>
-    typeof window !== "undefined" ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false
-  );
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => setReduced(mq.matches);
-    mq.addEventListener?.("change", apply);
-    return () => mq.removeEventListener?.("change", apply);
-  }, []);
+  // Scroll choreography: copy drifts up and fades, portrait sinks slower (parallax) and zooms gently.
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.16]);
 
-  const typingLines = [
-    `$ ${t.hero.lines.whoami}`,
-    t.hero.lines.name,
-    t.hero.lines.title,
-    "",
-    t.hero.lines.pitch,
-  ];
+  const h = t.hero.headline;
 
   return (
-    <section id="top" className="relative pt-28 sm:pt-36 pb-20 sm:pb-28">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Terminal block */}
-          <div className="lg:col-span-8">
-            <div className="terminal-panel overflow-hidden">
-              {/* Title bar */}
-              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-ink-700/60 bg-ink-900/60">
-                <span className="w-3 h-3 rounded-full bg-danger/80" />
-                <span className="w-3 h-3 rounded-full bg-amber-400/80" />
-                <span className="w-3 h-3 rounded-full bg-phosphor-400/80" />
-                <span className="mono text-[0.7rem] text-ink-400 ml-3 flex-1 text-center">
-                  {t.hero.promptUser}:{t.hero.promptPath}$ — zsh — 100×24
-                </span>
-              </div>
+    <section ref={ref} id="top" className="relative flex min-h-[100svh] flex-col overflow-hidden pt-32 md:pt-40">
+      {/* Ambient warm light behind the portrait */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-[10%] top-[5%] h-[70vh] w-[60vw] rounded-full bg-[radial-gradient(closest-side,rgb(184_151_90/0.13),transparent)] blur-2xl"
+      />
 
-              {/* Body */}
-              <div className="p-5 sm:p-7 mono text-[0.85rem] sm:text-[0.95rem] leading-relaxed">
-                <div className="text-ink-400">
-                  <span className="text-phosphor-400">{t.hero.promptUser}</span>
-                  <span className="text-ink-500">@</span>
-                  <span className="text-teal-300">portfolio</span>
-                  <span className="text-ink-500">:</span>
-                  <span className="text-amber-300">{t.hero.promptPath}</span>
-                  <span className="text-ink-500">$ </span>
-                  <span className="text-ink-100">{t.hero.lines.whoami}</span>
-                </div>
+      <div className="container-x relative grid flex-1 items-center gap-14 lg:grid-cols-12 lg:gap-10">
+        <motion.div style={{ y: copyY, opacity: copyOpacity }} className="lg:col-span-7">
+          <Reveal onMount delay={0.35} y={12} className="mb-8 flex items-center gap-3">
+            <span className="h-1.5 w-1.5 animate-breathe rounded-full bg-brass-400" />
+            <span className="eyebrow">{t.hero.eyebrow}</span>
+          </Reveal>
 
-                <div className="mt-5 text-ink-100">
-                  <TypingText
-                    lines={typingLines.slice(1)}
-                    skip={reduced}
-                    speed={10}
-                    lineDelay={160}
-                    startDelay={140}
+          <h1 className="display text-[clamp(3.1rem,8vw,8rem)] leading-[0.94]">
+            <MaskLines
+              onMount
+              delay={0.45}
+              lines={[
+                h.line1,
+                <>
+                  {h.line2}
+                  <em className="italic text-brass-200">{h.emphasis}</em>
+                  {h.end}
+                </>,
+              ]}
+            />
+          </h1>
+
+          <Reveal onMount delay={0.95} className="mt-9 max-w-[34rem]">
+            <p className="text-[1.08rem] leading-[1.7] text-cream-300 md:text-[1.15rem]">{t.hero.lede}</p>
+          </Reveal>
+
+          <Reveal onMount delay={1.1} className="mt-11 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <AnchorLink href="#work" id="hero-cta-work" className="btn-pill">
+              {t.hero.ctaPrimary}
+              <ArrowRight className="arrow" />
+            </AnchorLink>
+            <AnchorLink
+              href="#contact"
+              id="hero-cta-contact"
+              className="link-underline text-[0.95rem] text-cream-100 transition-colors hover:text-cream-50"
+            >
+              {t.hero.ctaSecondary}
+            </AnchorLink>
+          </Reveal>
+        </motion.div>
+
+        <motion.div style={{ y: portraitY }} className="lg:col-span-5 lg:pl-6">
+          <figure className="group relative mx-auto w-full max-w-[420px] lg:ml-auto lg:mr-0">
+            <motion.div
+              initial={{ clipPath: "inset(100% 0% 0% 0% round 28px)" }}
+              animate={{ clipPath: "inset(0% 0% 0% 0% round 28px)" }}
+              transition={{ duration: 1.6, ease: EASE, delay: 0.55 }}
+              className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-coal-800"
+            >
+              <motion.div style={{ scale: imageScale }} className="absolute inset-0">
+                <motion.div
+                  initial={{ scale: 1.25 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 2.2, ease: EASE, delay: 0.55 }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={portrait}
+                    alt={t.hero.portraitAlt}
+                    fill
+                    priority
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 420px, 90vw"
+                    className="tone-warm object-cover object-[50%_30%]"
                   />
-                </div>
+                </motion.div>
+              </motion.div>
+              {/* Soft vignette + inner hairline */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coal-950/55 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 rounded-[28px] ring-1 ring-inset ring-cream-100/10" />
+            </motion.div>
+            <Reveal onMount delay={1.4} y={8}>
+              <figcaption className="mt-5 flex items-center justify-between text-[0.68rem] uppercase tracking-[0.24em] text-cream-400">
+                <span>{t.hero.caption}</span>
+                <span className="text-cream-500">N° 01</span>
+              </figcaption>
+            </Reveal>
+          </figure>
+        </motion.div>
+      </div>
 
-                {/* CTAs */}
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <a href="#projects" className="btn btn-primary">
-                    <span aria-hidden>↴</span>
-                    {t.hero.ctaProjects}
-                  </a>
-                  <a
-                    href="https://github.com/pcnasc"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn btn-ghost"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                      <path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.3-5.24-1.28-5.24-5.7 0-1.26.45-2.28 1.2-3.08-.12-.3-.52-1.5.1-3.12 0 0 .97-.3 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.48 3.17-1.18 3.17-1.18.63 1.62.23 2.82.11 3.12.75.8 1.2 1.82 1.2 3.08 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.08.78 2.18v3.23c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z" />
-                    </svg>
-                    {t.hero.ctaGithub}
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/pedrocnasc"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn btn-ghost"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                      <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.3c0-1.26-.02-2.9-1.77-2.9-1.78 0-2.05 1.38-2.05 2.82V21h-4V9Z" />
-                    </svg>
-                    {t.hero.ctaLinkedin}
-                  </a>
-                  <a
-                    href="mailto:pedroeng.nascimento@gmail.com"
-                    className="btn btn-ghost"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                      <rect x="3" y="5" width="18" height="14" rx="2" />
-                      <path d="m3 7 9 6 9-6" />
-                    </svg>
-                    {t.hero.ctaEmail}
-                  </a>
-                  <button
-                    type="button"
-                    disabled
-                    className="btn btn-ghost"
-                    aria-disabled="true"
-                    title={t.hero.cvDisabled}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                      <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-                    </svg>
-                    {t.hero.cvDisabled}
-                  </button>
-                </div>
-
-                {/* Stack chips */}
-                <div className="mt-8 pt-6 border-t border-ink-700/40">
-                  <div className="flex flex-wrap gap-1.5">
-                    {["Go", "Elixir", "Kafka", "J1939 CAN", "ChromaDB", "Postgres"].map((s) => (
-                      <span key={s} className="chip">
-                        <span className="w-1 h-1 rounded-full bg-phosphor-400" />
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Meta column */}
-          <ScrollReveal className="lg:col-span-4 lg:sticky lg:top-24" delay={150}>
-            <div className="terminal-panel overflow-hidden">
-              {/* Status row */}
-              <div className="flex items-center justify-between px-5 pt-4 pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="dot-status" />
-                  <span className="mono text-xs text-ink-200">
-                    <span className="text-ink-400">{t.hero.statusLabel}:</span>{" "}
-                    <span className="text-phosphor-300">{t.hero.statusValue}</span>
-                  </span>
-                </div>
-                <span className="mono text-[0.65rem] text-ink-500">#a7f070</span>
-              </div>
-
-              {/* Portrait feed — terminal-style frame */}
-              <div className="px-5 pb-5">
-                <div className="border border-ink-700/60 rounded-md overflow-hidden bg-ink-950">
-                  {/* Mini title bar */}
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-ink-700/40 bg-ink-900/60">
-                    <span className="w-2 h-2 rounded-full bg-danger/70" />
-                    <span className="w-2 h-2 rounded-full bg-amber-400/70" />
-                    <span className="w-2 h-2 rounded-full bg-phosphor-400/70" />
-                    <span className="mono text-[0.6rem] text-ink-500 ml-2 flex-1 truncate">
-                      portrait.feed · <span className="text-ink-400">~/pedro.png</span>
-                    </span>
-                    <span className="mono text-[0.55rem] text-phosphor-400/80 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-phosphor-400 animate-pulseDot" />
-                      online
-                    </span>
-                  </div>
-
-                  {/* Image */}
-                  <div className="relative portrait-feed">
-                    <div className="corner-brackets" />
-                    <div className="portrait-scanlines" />
-                    <div className="aspect-[3/4] relative">
-                      <Image
-                        src="/pedro.png"
-                        alt="Pedro Nascimento"
-                        fill
-                        sizes="(min-width: 1024px) 25vw, 50vw"
-                        className="object-cover object-top portrait-img"
-                        priority
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
+      {/* Recognition row */}
+      <div className="container-x relative mt-16 pb-10 md:mt-20">
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1.6, ease: EASE, delay: 1.2 }}
+          className="h-px origin-left bg-gradient-to-r from-brass-500/70 via-brass-500/30 to-transparent"
+        />
+        <div className="mt-7 grid gap-5 sm:grid-cols-3 sm:gap-8">
+          {t.hero.awards.map((a, i) => (
+            <Reveal key={a.event} onMount delay={1.35 + i * 0.1} y={14}>
+              <p className="flex items-baseline gap-3">
+                <span className="font-serif text-[2.1rem] leading-none text-cream-50">{a.place}</span>
+                <span className="text-cream-500">—</span>
+                <span className="text-[0.88rem] leading-snug text-cream-300">
+                  {a.event} <span className="text-cream-500">{a.year}</span>
+                </span>
+              </p>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
