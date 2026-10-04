@@ -1,158 +1,192 @@
 import type { Dict } from "./pt";
 
 const en: Dict = {
-  site: {
+  meta: {
     title: "Pedro Nascimento — Software Engineer",
     description:
-      "Pedro Nascimento's portfolio — Software Engineer at SumUp (Payments/Acquiring), Computer Engineering student at FIAP, focused on high-concurrency systems, AI and robotics.",
+      "Pedro Nascimento — Software Engineer at SumUp (Acquiring) and Computer Engineering student at FIAP. High-concurrency systems, deterministic edge AI and industrial telemetry.",
   },
   nav: {
     about: "About",
+    work: "Work",
     experience: "Experience",
-    projects: "Projects",
-    repos: "Repositories",
-    skills: "Skills",
+    capabilities: "Capabilities",
+    contact: "Contact",
+    menu: "Menu",
+    close: "Close",
   },
   hero: {
-    promptUser: "pedro@portfolio",
-    promptPath: "~",
-    lines: {
-      whoami: "whoami",
-      name: "Pedro Nascimento",
-      title: "High concurrency · acquiring & routing · deterministic edge AI · industrial telemetry",
-      pitch:
-        "Engineer building high-concurrency acquiring services, deterministic edge-AI copilots, and industrial telemetry systems. Where pressure and precision meet — that's where I operate.",
-    },
-    ctaProjects: "View Projects",
-    ctaGithub: "GitHub",
-    ctaLinkedin: "LinkedIn",
-    ctaEmail: "Email",
-    cvDisabled: "CV coming soon",
-    statusLabel: "status",
-    statusValue: "open to connections",
+    eyebrow: "Software Engineer — São Paulo",
+    headline: { line1: "Systems built for", line2: "pressure & ", emphasis: "precision", end: "." },
+    lede:
+      "I build high-concurrency payment infrastructure at SumUp, deterministic edge-AI copilots and industrial telemetry systems.",
+    ctaPrimary: "View selected work",
+    ctaSecondary: "Get in touch",
+    status: "Currently at SumUp · Acquiring Engineering",
+    caption: "Est. 2004 · FIAP · SumUp",
+    portraitAlt: "Portrait of Pedro Nascimento",
+    awards: [
+      { place: "1st", event: "SPI + ABDI Gen AI Challenge", year: "2024" },
+      { place: "2nd", event: "Festo Digital Twin Challenge", year: "2025" },
+      { place: "3rd", event: "Google Cloud GenAI Hackathon", year: "2024" },
+    ],
+    scroll: "Scroll",
   },
   about: {
-    label: "01 / About",
-    title: "About Me",
+    label: "About",
+    manifesto:
+      "I build the systems that can't afford to fail — payment rails that move a country's transactions, copilots that keep machines running where there's no signal, and models that turn raw telemetry into foresight.",
     body: [
-      "I'm a Computer Engineering student at FIAP and hold an IT Technician diploma from Senai, focused on building high-concurrency critical systems, deterministic software architectures, and the intersection between software and hardware.",
-      "I currently work on Acquiring Engineering at SumUp, designing low-latency services for nationwide transaction throughput. My professional interests span financial applications, health tech (especially neurotechnology), applied physics, and any system where pressure and precision matter — that's where I perform best.",
+      "I'm a Computer Engineering student at FIAP with an IT Technician diploma from SENAI, focused on high-concurrency critical systems, deterministic software architecture and the intersection between software and hardware.",
+      "Today I work on Acquiring Engineering at SumUp, designing low-latency services for nationwide transaction throughput. My interests span financial applications, health tech — neurotechnology in particular — applied physics, and any system where pressure and precision matter. That's where I do my best work.",
+    ],
+    facts: [
+      { label: "Education", lines: ["FIAP — B.Sc. Computer Engineering, 2023–2027", "SENAI — IT Technician, 2020–2022"] },
+      { label: "Certifications", lines: ["Google Cloud — Infrastructure, Networks & Security, ML/AI", "Harvard CS50 — in progress"] },
+      { label: "Languages", lines: ["Portuguese (native) · English (fluent) · French (basic)"] },
+      { label: "Based in", lines: ["São Paulo, Brazil"] },
+    ],
+  },
+  marquee: ["Go", "Elixir", "Erlang", "Apache Kafka", "PostgreSQL", "J1939 CAN", "ESP32", "ChromaDB", "Ollama", "YOLO", "Vertex AI", "Grafana"],
+  work: {
+    label: "Selected work",
+    title: "Four cases where software meets the physical world.",
+    intro:
+      "From innovation marathons to industrial platforms — work at the intersection of software, AI and hardware.",
+    items: [
+      {
+        id: "festo-digital-twin",
+        number: "01",
+        title: "Festo Digital Twin",
+        subtitle: "Predictive energy engine for industrial pneumatics",
+        kicker: "2nd Place · Festo Digital Twin Challenge 2025",
+        summary:
+          "A telemetry pipeline for a Festo pneumatic testbed that turns live pressure, flow and cycle data into physical degradation models — predicting valve-seal wear and pressure-drop anomalies, and quantifying compressor energy waste in kWh before it becomes downtime. Paired with NewSon, a RAG assistant grounded in live operational data.",
+        metrics: [
+          { value: "2nd", label: "place among Festo challenge teams" },
+          { value: "kWh", label: "energy waste quantified in real time" },
+        ],
+        tags: ["Pneumatic telemetry", "Wear prediction", "Energy optimisation", "RAG", "Python"],
+        links: [{ label: "Code on GitHub", href: "https://github.com/macorfilho/festo-digital-twin" }],
+      },
+      {
+        id: "jd-fixit",
+        number: "02",
+        title: "JD Fixit",
+        subtitle: "Deterministic cabin copilot for forestry harvesters",
+        kicker: "Edge robotics & offline AI",
+        summary:
+          "Harvesters lose ~$131 an hour when they stall in parcels with zero signal. JD Fixit runs entirely inside the cabin: custom ESP32 firmware reads raw J1939 CAN telemetry, a deterministic state machine sandboxes every safety transition, and an offline RAG stack (ChromaDB, Ollama) cites a 401-page OEM service manual — with strict Pydantic schemas and zero LLM control over execution.",
+        metrics: [
+          { value: "22/22", label: "deterministic conformance tests" },
+          { value: "401", label: "page OEM manual, cited offline" },
+          { value: "0", label: "LLM control over execution" },
+        ],
+        tags: ["J1939 CAN", "ESP32 firmware", "Deterministic FSM", "ChromaDB", "Ollama", "FastAPI"],
+        links: [],
+      },
+      {
+        id: "robot-arm",
+        number: "03",
+        title: "Vision-Guided Robot Arm",
+        subtitle: "Industrial automation with real-time computer vision",
+        kicker: "1st Place · SPI + ABDI Gen AI Challenge 2024",
+        summary:
+          "A robotic arm paired with a real-time computer-vision ecosystem that detects, classifies and manipulates objects on a factory floor — trained with YOLO and simulated on the NVIDIA Omniverse platform (MeshIA).",
+        metrics: [
+          { value: "1st", label: "place at SPI + ABDI Gen AI Challenge" },
+          { value: "91%", label: "identification accuracy on top item" },
+        ],
+        tags: ["NVIDIA Omniverse", "YOLO", "Computer vision", "Robotics"],
+        links: [],
+      },
+      {
+        id: "visai",
+        number: "04",
+        title: "VisAI",
+        subtitle: "Multimodal assistant for accessibility",
+        kicker: "3rd Place · Google Cloud GenAI & FIAP Hackathon",
+        summary:
+          "Built in four hours: a multimodal assistant for visual accessibility and social-interaction support across the autism spectrum — emotion analysis with Vertex AI, scene understanding with Gemini and natural speech synthesis with CHIP3.",
+        metrics: [
+          { value: "4h", label: "from idea to working prototype" },
+          { value: "3rd", label: "place at Google Cloud & FIAP hackathon" },
+        ],
+        tags: ["React", "Gemini", "Vertex AI", "Accessibility"],
+        links: [],
+      },
     ],
   },
   experience: {
-    label: "02 / Journey",
-    title: "Professional Experience",
+    label: "Journey",
+    title: "Experience",
+    intro: "Where theory meets production — and the throughput is real.",
+    present: "Current",
     items: [
       {
         company: "SumUp",
         role: "Software Engineer Intern · Acquiring Engineering",
-        period: "Jul 2025 – Present",
+        period: "Jul 2025 — Present",
         current: true,
         description:
-          "Engineering high-concurrency, low-latency acquiring services handling nationwide transaction throughput. Designed routing engines interfacing directly with card schemes (Visa, Mastercard) and major acquirers (Cielo) via RS2 protocols. Implemented resilient event-driven pipelines and state consistency using Go, Elixir/Erlang, PostgreSQL, and Apache Kafka.",
+          "Engineering high-concurrency, low-latency acquiring services that handle nationwide transaction throughput. Routing engines and direct integrations with card schemes (Visa, Mastercard) and acquirers (Cielo) over RS2, with resilient event-driven pipelines and state consistency.",
         scope: [
           "Transaction routing with Go, Elixir and Erlang",
           "Acquiring protocols: RS2, Visa Direct, Mastercard Send",
           "Event-driven architecture with Kafka, PostgreSQL and Redis",
-          "High concurrency — most critical system in the company",
+          "High concurrency on the company's most critical system",
           "Observability with Grafana and Elastic (ELK)",
         ],
       },
       {
         company: "GOL Linhas Aéreas",
         role: "IT & Finance Intern",
-        period: "Mar 2025 – Jul 2025",
+        period: "Mar 2025 — Jul 2025",
         current: false,
         description:
-          "Integration between IT coordination, Finance and Administration. Support for critical internal systems, financial data analysis and improvement of technological processes in the airline's operation.",
+          "Bridged IT coordination, Finance and Administration. Supported critical internal systems, analysed financial data and improved technology processes across the airline's operation.",
         scope: [],
       },
     ],
   },
-  projects: {
-    label: "03 / Cases",
-    title: "Featured Projects",
-    intro:
-      "Four cases that synthesize my work at the intersection of software, AI and hardware — from innovation marathons to industrial platforms.",
-    items: [
-      {
-        id: "festo-digital-twin",
-        number: "01",
-        title: "Digital Twin & Predictive Energy Engine for Industrial Pneumatics",
-        badge: "🥈 2nd Place · Festo Digital Twin Challenge 2025 (Team NewByte)",
-        summary:
-          "Engineered the telemetry pipeline for a Festo pneumatic testbed, translating live pressure, flow, and cycle metrics into physical degradation models. Formulated algorithmic predictions for valve seal wear and pressure-drop anomalies, calculating compressor energy waste in kWh and air consumption to preempt station downtime. Anchored by a RAG-powered specialist assistant (NewSon) on live operational data.",
-        tags: ["Pneumatic Telemetry", "Wear Prediction", "Energy Optimization", "RAG / GenAI", "Python"],
-        links: [{ label: "github.com/macorfilho/festo-digital-twin", href: "https://github.com/macorfilho/festo-digital-twin" }],
-      },
-      {
-        id: "jd-fixit",
-        number: "02",
-        title: "JD Fixit — Deterministic Cabin Copilot for Forestry Harvesters",
-        badge: "Category: Edge Robotics & Offline AI",
-        summary:
-          "Heavy forestry harvesters face ~$131/hour field downtime in remote parcels with zero cellular reception. Built an edge-native diagnostic copilot running locally inside the cabin. Reads raw J1939 CAN bus telemetry through custom ESP32 firmware, driven by a deterministic Finite State Machine that sandboxes all safety transitions. Anchored by offline RAG (ChromaDB, nomic-embed-text, Ollama) citing a 401-page OEM service manual with strict Pydantic schemas, state replay, and zero LLM control over execution logic. Verified: 22/22 deterministic conformance, 401-page manual ingestion.",
-        tags: ["J1939 CAN", "ESP32 Firmware", "Deterministic FSM", "ChromaDB", "Ollama", "FastAPI", "Pydantic"],
-        links: [],
-      },
-      {
-        id: "robot-arm",
-        number: "03",
-        title: "Industrial Automation Robot with Computer Vision",
-        badge: "🥇 1st Place · SPI + ABDI Gen AI Challenge 2024 (Team NewByte)",
-        summary:
-          "Industrial automation combining a robotic arm with a real-time computer vision ecosystem. Detection, categorization and manipulation of objects in a factory using YOLO and the NVIDIA Omniverse platform (MeshIA).",
-        tags: ["NVIDIA Omniverse", "YOLO", "Computer Vision", "Robotics", "MeshIA"],
-        links: [],
-      },
-      {
-        id: "visai",
-        number: "04",
-        title: "VisAI — Multimodal Assistant for Accessibility",
-        badge: "🥉 3rd Place · Google Cloud GenAI & FIAP Hackathon",
-        summary:
-          "Functional prototype built in 4 hours for visual accessibility and support for social interactions across the autism spectrum (ASD). Integrates emotion analysis via Vertex AI, computer vision with Gemini, and natural audio synthesis with CHIP3.",
-        tags: ["React", "Google Cloud Gemini", "Vertex AI", "Accessibility", "CHIP3"],
-        links: [],
-      },
-    ],
-  },
-  repos: {
-    label: "04 / GitHub",
-    title: "Repositories",
-    intro: "Dynamic selection via GitHub API — sorted by stars and recent activity.",
-    stars: "stars",
-    forks: "forks",
-    viewOnGithub: "View on GitHub",
-    loading: "Loading repositories…",
-    fallbackTitle: "Repositories (snapshot)",
-    fallback: [
-      "festo-digital-twin",
-      "visai",
-      "industrial-robot-arm",
-      "sumup-adquirencia-toolkit",
-      "gcp-foundations",
-      "fiap-computacao",
-    ],
-    error: "Could not load repositories at the moment.",
-  },
-  skills: {
-    label: "05 / Skills",
-    title: "Skills Matrix",
+  capabilities: {
+    label: "Capabilities",
+    title: "Tools for systems under pressure.",
+    intro: "From the protocol layer to the model — the stack I think and build with.",
     categories: [
       { name: "Languages", items: ["Go", "Elixir", "Erlang", "Python", "TypeScript", "Java"] },
-      { name: "Protocols & Hardware", items: ["RS2 / Payment Protocols", "J1939 CAN Bus", "ESP32 Firmware", "WebSockets"] },
-      { name: "Concurrency & Streaming", items: ["Apache Kafka", "High-Throughput Routing", "RabbitMQ", "AWS SQS"] },
-      { name: "Intelligence & Logic", items: ["Deterministic FSMs", "ChromaDB RAG", "Local LLM (Ollama)", "YOLO + CV", "Pydantic Validation"] },
+      { name: "Concurrency & Streaming", items: ["Apache Kafka", "High-throughput routing", "RabbitMQ", "AWS SQS"] },
+      { name: "Protocols & Hardware", items: ["RS2 / Payment protocols", "J1939 CAN Bus", "ESP32 firmware", "WebSockets"] },
+      { name: "Intelligence & Logic", items: ["Deterministic FSMs", "ChromaDB RAG", "Local LLMs (Ollama)", "YOLO + Vision", "Pydantic validation"] },
       { name: "Data & Persistence", items: ["PostgreSQL", "Async SQLite", "MongoDB", "Snowflake", "Redis"] },
       { name: "Infra & Observability", items: ["Grafana", "Elastic (ELK)", "Schema Registry", "Docker"] },
       { name: "GCP Certifications", items: ["Foundational Infrastructure", "Networks & Security", "ML/AI Tasks"] },
-      { name: "Spoken Languages", items: ["Portuguese (Native)", "English (Fluent)", "French (Basic)"] },
+      { name: "Spoken languages", items: ["Portuguese (native)", "English (fluent)", "French (basic)"] },
     ],
   },
+  openSource: {
+    label: "Open source",
+    title: "From notebook to repository.",
+    intro: "A selection of my public repositories — from neural nets built from scratch to embedded systems.",
+    profile: "View GitHub profile",
+    noDescription: "No description — the code speaks for itself.",
+    contributions: "{count} contributions in the last year",
+    snakeCaption: "The snake eats the commits. I write more.",
+  },
+  contact: {
+    label: "Contact",
+    titleLine1: "Let's build something",
+    titleEmphasis: "precise.",
+    body: "Open to conversations about payments infrastructure, edge AI and high-stakes systems — and good ideas in general.",
+    copy: "Copy",
+    copied: "Copied",
+    cv: "CV coming soon",
+  },
   footer: {
-    built: "Built with Next.js, Tailwind and a lot of coffee.",
-    copyright: "© {year} Pedro Nascimento. All rights reserved.",
+    rights: "All rights reserved.",
+    built: "Designed & engineered in São Paulo.",
+    localTime: "São Paulo",
+    backToTop: "Back to top",
   },
 };
 
