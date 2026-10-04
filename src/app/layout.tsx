@@ -1,77 +1,102 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { Background } from "@/components/layout/Background";
-import { Header, Footer } from "@/components/layout/Header";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
-const display = Space_Grotesk({
-  variable: "--font-display",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  variable: "--font-mono",
+const instrument = Instrument_Serif({
+  variable: "--font-instrument",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
+
+const SITE_URL = "https://pedronasc.dev";
+const DESCRIPTION =
+  "Pedro Nascimento — Engenheiro de Software na SumUp (Adquirência) e estudante de Engenharia de Computação na FIAP. Sistemas de alta concorrência, IA determinística na borda e telemetria industrial.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://pedronascimento.dev"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Pedro Nascimento — Software Engineer",
     template: "%s · Pedro Nascimento",
   },
-  description:
-    "Portfólio de Pedro Nascimento — Engenheiro de Software na SumUp (Adquirência), estudante de Engenharia de Computação na FIAP, com foco em sistemas de alta concorrência, IA e robótica.",
-  applicationName: "Pedro Nascimento · Portfolio",
-  authors: [{ name: "Pedro Nascimento", url: "https://github.com/pcnasc" }],
+  description: DESCRIPTION,
+  applicationName: "Pedro Nascimento",
+  authors: [{ name: "Pedro Nascimento", url: SITE_URL }],
   creator: "Pedro Nascimento",
+  keywords: [
+    "Pedro Nascimento",
+    "Software Engineer",
+    "SumUp",
+    "FIAP",
+    "Go",
+    "Elixir",
+    "Kafka",
+    "Edge AI",
+    "Payments",
+    "São Paulo",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    siteName: "Pedro Nascimento · Portfolio",
+    alternateLocale: ["en_US"],
+    siteName: "Pedro Nascimento",
     title: "Pedro Nascimento — Software Engineer",
-    description:
-      "Software Engineer Intern @ SumUp · Computer Engineering @ FIAP · Robotics & AI. Portfólio com cases de Digital Twin, Visão Computacional e Acessibilidade.",
-    url: "https://pedronascimento.dev",
+    description: "Systems built for pressure & precision. Software Engineer at SumUp · Computer Engineering at FIAP.",
+    url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
     title: "Pedro Nascimento — Software Engineer",
-    description:
-      "Software Engineer Intern @ SumUp · Computer Engineering @ FIAP · Robotics & AI",
+    description: "Systems built for pressure & precision. Software Engineer at SumUp · Computer Engineering at FIAP.",
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#12110e",
+  colorScheme: "dark",
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Pedro Nascimento",
+  url: SITE_URL,
+  jobTitle: "Software Engineer",
+  worksFor: { "@type": "Organization", name: "SumUp" },
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "FIAP" },
+    { "@type": "EducationalOrganization", name: "SENAI" },
+  ],
+  address: { "@type": "PostalAddress", addressLocality: "São Paulo", addressCountry: "BR" },
+  sameAs: ["https://github.com/pcnasc", "https://linkedin.com/in/pedrocnasc"],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="pt-BR"
-      className={`${display.variable} ${mono.variable}`}
-      suppressHydrationWarning
-    >
-      <head>
-        <meta name="theme-color" content="#07090c" />
-      </head>
-      <body className="min-h-screen flex flex-col relative">
-        <Background />
+    <html lang="pt-BR" className={`${inter.variable} ${instrument.variable}`} suppressHydrationWarning>
+      <body className="relative min-h-screen">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <Providers>
           <Header />
-          <main className="flex-1 relative">{children}</main>
+          <main className="relative">{children}</main>
           <Footer />
         </Providers>
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );

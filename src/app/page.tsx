@@ -1,34 +1,29 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
-import pt from "@/messages/pt";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
+import { Marquee } from "@/components/sections/Marquee";
+import { Work } from "@/components/sections/Work";
 import { Experience } from "@/components/sections/Experience";
-import { Projects } from "@/components/sections/Projects";
-import { Repos } from "@/components/sections/Repos";
-import { Skills } from "@/components/sections/Skills";
-import { ContributionSnake } from "@/components/ui/ContributionSnake";
+import { Capabilities } from "@/components/sections/Capabilities";
+import { OpenSource } from "@/components/sections/OpenSource";
+import { Contact } from "@/components/sections/Contact";
+import { fetchContributions, fetchRepos } from "@/lib/github";
 
-export default function Home() {
-  // Resolve which project screenshots actually exist at build time so the
-  // client never requests a missing /projects/{id}.png (no console 404s).
-  // Dropping a real PNG into public/projects/ + redeploy swaps it in (GUD-005).
-  const projectImages = Object.fromEntries(
-    pt.projects.items.map((p) => [
-      p.id,
-      existsSync(join(process.cwd(), "public", "projects", `${p.id}.png`)),
-    ])
-  );
+// Static page, re-generated at most hourly (GitHub repos + contribution calendar).
+export const revalidate = 3600;
+
+export default async function Home() {
+  const [repos, contributions] = await Promise.all([fetchRepos(), fetchContributions()]);
 
   return (
     <>
       <Hero />
       <About />
+      <Marquee />
+      <Work />
       <Experience />
-      <Projects projectImages={projectImages} />
-      <Repos />
-      <Skills />
-      <ContributionSnake className="max-w-3xl mx-auto px-5 sm:px-8" rows={8} speed={0.8} theme="dark" />
+      <Capabilities />
+      <OpenSource repos={repos} contributions={contributions} />
+      <Contact />
     </>
   );
 }
