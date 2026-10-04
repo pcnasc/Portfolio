@@ -1,60 +1,52 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n";
-import { SectionHeader } from "@/components/layout/Header";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { Reveal, ScrollText } from "@/components/motion/primitives";
 
 export function About() {
   const { t } = useI18n();
+
   return (
-    <section id="about" className="relative py-24 sm:py-32">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <ScrollReveal>
-          <SectionHeader label={t.about.label} title={t.about.title} id="about" />
-        </ScrollReveal>
+    <section id="about" className="section">
+      <div className="container-x">
+        <Reveal className="mb-12 flex items-center gap-4">
+          <span className="h-px w-10 bg-brass-500/60" />
+          <span className="eyebrow">{t.about.label}</span>
+        </Reveal>
 
-        <div className="grid lg:grid-cols-12 gap-10 items-start">
-          <ScrollReveal className="lg:col-span-7" delay={80}>
-            <div className="space-y-5 text-ink-200 text-base sm:text-lg leading-relaxed">
-              {t.about.body.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-          </ScrollReveal>
+        <ScrollText
+          text={t.about.manifesto}
+          className="display max-w-[22ch] text-[clamp(2.1rem,4.6vw,4.4rem)] leading-[1.08] sm:max-w-[24ch] lg:max-w-[26ch]"
+        />
 
-          <ScrollReveal className="lg:col-span-5" delay={180}>
-            <aside className="terminal-panel p-5 sm:p-6 mono text-xs sm:text-sm">
-              <div className="text-ink-400 mb-3">
-                <span className="text-phosphor-400">cat</span>{" "}
-                <span className="text-ink-200">bio.executive</span>{" "}
-                <span className="text-ink-500">| head -n 4</span>
-              </div>
-              <ul className="space-y-2">
-                <Fact k="●" v="Software Engineer Intern" accent />
-                <Fact k="●" v="FIAP — Computer Engineering" accent />
-                <Fact k="●" v="Senai — IT Technician" />
-                <Fact k="●" v="SumUp — Adquirência (Go/Java)" accent />
-                <Fact k="●" v="GOL Linhas Aéreas — IT/Finance" />
-                <Fact k="●" v="3× winner · innovation marathons" accent />
-                <Fact k="●" v="Focus: distributed, AI, robotics" />
-                <Fact k="●" v="São Paulo · BR" />
-              </ul>
-              <div className="mt-5 pt-4 border-t border-ink-700/60 text-ink-500 text-[0.7rem]">
-                {"// systems · hardware · intelligence"}
-              </div>
-            </aside>
-          </ScrollReveal>
+        <div className="mt-24 grid gap-16 md:mt-32 lg:grid-cols-12 lg:gap-10">
+          <div className="space-y-6 lg:col-span-6">
+            {t.about.body.map((p, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <p className="text-[1.05rem] leading-[1.8] text-cream-300">{p}</p>
+              </Reveal>
+            ))}
+          </div>
+
+          <dl className="lg:col-span-5 lg:col-start-8">
+            {t.about.facts.map((f, i) => (
+              <Reveal
+                key={f.label}
+                delay={i * 0.06}
+                y={16}
+                className="grid grid-cols-[8.5rem_1fr] gap-6 border-t border-cream-100/[0.08] py-5 last:border-b"
+              >
+                <dt className="pt-0.5 text-[0.68rem] uppercase tracking-[0.22em] text-cream-500">{f.label}</dt>
+                <dd className="space-y-1 text-[0.95rem] leading-relaxed text-cream-100">
+                  {f.lines.map((l) => (
+                    <p key={l}>{l}</p>
+                  ))}
+                </dd>
+              </Reveal>
+            ))}
+          </dl>
         </div>
       </div>
     </section>
-  );
-}
-
-function Fact({ k, v, accent }: { k: string; v: string; accent?: boolean }) {
-  return (
-    <li className="flex items-start gap-2.5">
-      <span className={accent ? "text-phosphor-400" : "text-amber-400"}>{k}</span>
-      <span className={accent ? "text-ink-50" : "text-ink-200"}>{v}</span>
-    </li>
   );
 }
