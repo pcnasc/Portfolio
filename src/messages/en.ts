@@ -19,7 +19,7 @@ const en: Dict = {
     eyebrow: "Software Engineer — São Paulo",
     headline: { line1: "Systems built for", line2: "pressure & ", emphasis: "precision", end: "." },
     lede:
-      "I build high-concurrency payment infrastructure at SumUp, deterministic edge-AI copilots and industrial telemetry systems.",
+      "I'm a software engineer building high-concurrency payment infrastructure at SumUp, offline edge-AI systems, and industrial telemetry pipelines.",
     ctaPrimary: "View selected work",
     ctaSecondary: "Get in touch",
     status: "Currently at SumUp · Acquiring Engineering",
@@ -35,7 +35,7 @@ const en: Dict = {
   about: {
     label: "About",
     manifesto:
-      "I build the systems that can't afford to fail — payment rails that move a country's transactions, copilots that keep machines running where there's no signal, and models that turn raw telemetry into foresight.",
+      "I build the systems that can't afford to fail — payment rails that move a country's transactions, edge intelligence that keeps machines running in dead zones, and models that turn raw telemetry into foresight.",
     body: [
       "I'm a Computer Engineering student at FIAP with an IT Technician diploma from SENAI, focused on high-concurrency critical systems, deterministic software architecture and the intersection between software and hardware.",
       "Today I work on Acquiring Engineering at SumUp, designing low-latency services for nationwide transaction throughput. My interests span financial applications, health tech — neurotechnology in particular — applied physics, and any system where pressure and precision matter. That's where I do my best work.",

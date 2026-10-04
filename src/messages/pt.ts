@@ -112,7 +112,7 @@ const pt: Dict = {
     eyebrow: "Engenheiro de Software — São Paulo",
     headline: { line1: "Sistemas feitos para", line2: "pressão & ", emphasis: "precisão", end: "." },
     lede:
-      "Construo infraestrutura de pagamentos de alta concorrência na SumUp, copilotos de IA determinística na borda e sistemas de telemetria industrial.",
+      "Sou um engenheiro de software construindo infraestrutura de pagamentos de alta concorrência na SumUp, sistemas de inteligência offline na borda e pipelines de telemetria industrial.",
     ctaPrimary: "Ver projetos",
     ctaSecondary: "Entrar em contato",
     status: "Atualmente na SumUp · Acquiring Engineering",
@@ -128,7 +128,7 @@ const pt: Dict = {
   about: {
     label: "Sobre",
     manifesto:
-      "Construo sistemas que não podem falhar — trilhos de pagamento que movem as transações de um país, copilotos que mantêm máquinas operando onde não há sinal e modelos que transformam telemetria bruta em previsão.",
+      "Construo sistemas que não podem falhar — trilhos de pagamento que movem as transações de um país, inteligência na borda que mantém máquinas operando em áreas sem sinal, e modelos que transformam telemetria bruta em previsão.",
     body: [
       "Sou estudante de Engenharia de Computação na FIAP e Técnico em Informática pelo SENAI, com foco em sistemas críticos de alta concorrência, arquitetura de software determinística e a intersecção entre software e hardware.",
       "Hoje atuo na engenharia de Adquirência da SumUp, projetando serviços de baixa latência para o volume nacional de transações. Meus interesses passam por aplicações financeiras, health tech — especialmente neurotecnologia —, física aplicada e qualquer sistema onde pressão e precisão importam. É onde eu rendo melhor.",
