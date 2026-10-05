@@ -45,6 +45,13 @@ function fallbackRepo(name: string): Repo {
   };
 }
 
+const CUSTOM_DESCRIPTIONS: Record<string, string> = {
+  "panoramic-dental-data":
+    "A Go backend for secure, high-throughput processing of dental radiographs, paired with a Python module for computer-vision and deep-learning research on the same images.",
+  PneumaticSim:
+    "An advanced physical simulator that models a complete pneumatic system with two industrial actuators interacting through a shared air supply and logic control (Virtual PLC). It mirrors hardware operation in real-time for monitoring, predictive analysis, and simulation.",
+};
+
 /** Curated repos via the GitHub API (ISR, 1h). Any failure degrades to a static entry. */
 export async function fetchRepos(): Promise<Repo[]> {
   return Promise.all(
@@ -58,7 +65,7 @@ export async function fetchRepos(): Promise<Repo[]> {
         const raw = (await r.json()) as Record<string, unknown>;
         return {
           name: String(raw.name ?? slug),
-          description: (raw.description as string | null) ?? null,
+          description: CUSTOM_DESCRIPTIONS[slug] ?? (raw.description as string | null) ?? null,
           language: (raw.language as string | null) ?? null,
           stargazers_count: Number(raw.stargazers_count ?? 0),
           html_url: String(raw.html_url ?? `https://github.com/${GITHUB_USER}/${slug}`),
