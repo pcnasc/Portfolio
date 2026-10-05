@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { AnchorLink } from "@/components/ui/links";
 
 function SaoPauloClock() {
@@ -21,7 +21,6 @@ function SaoPauloClock() {
 }
 
 export function Footer() {
-  const { t } = useI18n();
   const year = new Date().getFullYear();
 
   return (

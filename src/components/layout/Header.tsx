@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useEffect, useState } from "react";
-import { useI18n, type Locale } from "@/lib/i18n";
+import t from "@/messages";
 import { getLenis } from "@/lib/scroll";
 import { AnchorLink } from "@/components/ui/links";
 import { EASE } from "@/components/motion/primitives";
@@ -15,32 +15,7 @@ const LINKS = [
   { key: "contact", id: "contact" },
 ] as const;
 
-function LocaleToggle({ className = "" }: { className?: string }) {
-  const { locale, setLocale } = useI18n();
-  return (
-    <div role="group" aria-label="Language" className={`flex items-center gap-1.5 text-[0.72rem] tracking-[0.18em] ${className}`}>
-      {(["pt", "en"] as Locale[]).map((l, i) => (
-        <span key={l} className="flex items-center gap-1.5">
-          {i > 0 && <span className="text-cream-500">/</span>}
-          <button
-            id={`locale-${l}`}
-            type="button"
-            onClick={() => setLocale(l)}
-            aria-pressed={locale === l}
-            className={`uppercase transition-colors duration-300 ${
-              locale === l ? "text-cream-50" : "text-cream-500 hover:text-cream-200"
-            }`}
-          >
-            {l}
-          </button>
-        </span>
-      ))}
-    </div>
-  );
-}
-
 export function Header() {
-  const { t } = useI18n();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
@@ -133,7 +108,6 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-6">
-            <LocaleToggle className="hidden md:flex" />
             <button
               id="menu-toggle"
               type="button"
@@ -201,7 +175,6 @@ export function Header() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="mt-auto flex items-center justify-between"
             >
-              <LocaleToggle />
               <a href="mailto:pedroeng.nascimento@gmail.com" className="text-[0.85rem] text-cream-300">
                 pedroeng.nascimento@gmail.com
               </a>

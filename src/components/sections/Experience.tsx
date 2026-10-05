@@ -2,11 +2,10 @@
 
 import { motion, useScroll, useSpring } from "motion/react";
 import { useRef } from "react";
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { MaskLines, Reveal } from "@/components/motion/primitives";
 
 export function Experience() {
-  const { t } = useI18n();
   const listRef = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 0.7", "end 0.6"] });
   const draw = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });

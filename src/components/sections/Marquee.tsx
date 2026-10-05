@@ -1,10 +1,9 @@
 "use client";
 
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 
 /** Slow, endless serif ribbon of the stack — edges fade, pauses on hover. */
 export function Marquee() {
-  const { t } = useI18n();
   const items = t.marquee;
 
   const row = (hidden: boolean) => (

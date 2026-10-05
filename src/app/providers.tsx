@@ -3,7 +3,6 @@
 import Lenis from "lenis";
 import { MotionConfig } from "motion/react";
 import { useEffect, type ReactNode } from "react";
-import { I18nProvider } from "@/lib/i18n";
 import { setLenis } from "@/lib/scroll";
 
 function SmoothScroll() {
@@ -21,11 +20,9 @@ function SmoothScroll() {
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <I18nProvider initial="pt">
-      <MotionConfig reducedMotion="user">
-        <SmoothScroll />
-        {children}
-      </MotionConfig>
-    </I18nProvider>
+    <MotionConfig reducedMotion="user">
+      <SmoothScroll />
+      {children}
+    </MotionConfig>
   );
 }

@@ -3,13 +3,12 @@
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { EASE, MaskLines, Reveal } from "@/components/motion/primitives";
 import { AnchorLink, ArrowRight } from "@/components/ui/links";
 import portrait from "../../../public/pedro.jpg";
 
 export function Hero() {
-  const { t } = useI18n();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 

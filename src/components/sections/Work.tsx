@@ -3,9 +3,9 @@
 import Image, { type StaticImageData } from "next/image";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useRef } from "react";
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { useMediaQuery } from "@/lib/scroll";
-import type { Project } from "@/messages/pt";
+type Project = typeof t.work.items[number];
 import { MaskLines, Reveal } from "@/components/motion/primitives";
 import { ArrowUpRight } from "@/components/ui/links";
 import festo from "../../../public/projects/festo-digital-twin.jpg";
@@ -24,7 +24,6 @@ const MEDIA: Record<string, { src: StaticImageData; fit: "cover" | "framed"; pos
 const STACK_QUERY = "(min-width: 1024px) and (min-height: 720px)";
 
 export function Work() {
-  const { t } = useI18n();
   const deckRef = useRef<HTMLDivElement>(null);
   const stacking = useMediaQuery(STACK_QUERY);
   const { scrollYProgress } = useScroll({ target: deckRef, offset: ["start start", "end end"] });

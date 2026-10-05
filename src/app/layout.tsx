@@ -85,7 +85,7 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${instrument.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${instrument.variable}`} suppressHydrationWarning>
       <body className="relative min-h-screen">
         <script
           type="application/ld+json"

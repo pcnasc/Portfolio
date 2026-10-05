@@ -1,6 +1,4 @@
-import type { Dict } from "./pt";
-
-const en: Dict = {
+const t = {
   meta: {
     title: "Pedro Nascimento — Software Engineer",
     description:
@@ -190,4 +188,4 @@ const en: Dict = {
   },
 };
 
-export default en;
+export default t;

@@ -2,13 +2,12 @@
 
 import type { Contributions, Repo } from "@/lib/github";
 import { GITHUB_USER } from "@/lib/github";
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { MaskLines, Reveal } from "@/components/motion/primitives";
 import { ArrowUpRight } from "@/components/ui/links";
 import { ContributionGraph } from "@/components/ui/ContributionGraph";
 
 export function OpenSource({ repos, contributions }: { repos: Repo[]; contributions: Contributions | null }) {
-  const { t } = useI18n();
 
   return (
     <section id="open-source" className="section border-t border-cream-100/[0.06]">

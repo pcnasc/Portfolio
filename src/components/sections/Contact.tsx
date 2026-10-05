@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { MaskLines, Reveal } from "@/components/motion/primitives";
 import { ArrowUpRight } from "@/components/ui/links";
 
 const EMAIL = "pedroeng.nascimento@gmail.com";
 
 export function Contact() {
-  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {

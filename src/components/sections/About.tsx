@@ -1,10 +1,9 @@
 "use client";
 
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { Reveal, ScrollText } from "@/components/motion/primitives";
 
 export function About() {
-  const { t } = useI18n();
 
   return (
     <section id="about" className="section">

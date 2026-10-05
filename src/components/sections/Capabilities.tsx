@@ -1,10 +1,9 @@
 "use client";
 
-import { useI18n } from "@/lib/i18n";
+import t from "@/messages";
 import { MaskLines, Reveal } from "@/components/motion/primitives";
 
 export function Capabilities() {
-  const { t } = useI18n();
 
   return (
     <section id="capabilities" className="section border-t border-cream-100/[0.06]">

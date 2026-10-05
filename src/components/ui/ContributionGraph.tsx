@@ -3,7 +3,6 @@
 import { useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useRef } from "react";
 import type { Contributions } from "@/lib/github";
-import { useI18n } from "@/lib/i18n";
 
 /** Level 0–4, from empty charcoal to bright brass. */
 const LEVEL_COLORS = ["#1f1d19", "#3a3123", "#62502f", "#977841", "#d8bf8a"];
@@ -64,7 +63,6 @@ function buildPath(levels: number[], weeks: number): Cell[] {
 }
 
 export function ContributionGraph({ data }: { data: Contributions }) {
-  const { locale } = useI18n();
   const reduce = useReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -73,7 +71,7 @@ export function ContributionGraph({ data }: { data: Contributions }) {
   const path = useMemo(() => buildPath(levels, weeks), [levels, weeks]);
 
   const months = useMemo(() => {
-    const fmt = new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : "en-US", { month: "short", timeZone: "UTC" });
+    const fmt = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" });
     const start = new Date(`${data.start}T00:00:00Z`);
     const out: Array<{ col: number; label: string }> = [];
     let prev = -1;
@@ -87,7 +85,7 @@ export function ContributionGraph({ data }: { data: Contributions }) {
       }
     }
     return out;
-  }, [data.start, weeks, locale]);
+  }, [data.start, weeks]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -187,11 +185,11 @@ export function ContributionGraph({ data }: { data: Contributions }) {
         <canvas ref={canvasRef} className="block w-full" role="img" aria-label={`${data.total} GitHub contributions in the last year`} />
       </div>
       <div className="mt-4 flex items-center justify-end gap-1.5 text-[0.68rem] text-cream-500" aria-hidden>
-        <span className="mr-1">{locale === "pt" ? "Menos" : "Less"}</span>
+        <span className="mr-1">Less</span>
         {LEVEL_COLORS.map((c) => (
           <span key={c} className="h-2.5 w-2.5 rounded-[3px]" style={{ background: c }} />
         ))}
-        <span className="ml-1">{locale === "pt" ? "Mais" : "More"}</span>
+        <span className="ml-1">More</span>
       </div>
     </div>
   );
