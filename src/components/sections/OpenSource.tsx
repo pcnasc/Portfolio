@@ -52,7 +52,7 @@ export function OpenSource({ repos, contributions }: { repos: Repo[]; contributi
                     {r.name}
                   </span>
                   <span className="col-start-2 col-end-4 text-[0.9rem] leading-relaxed text-cream-400 md:col-start-auto md:col-end-auto md:line-clamp-2">
-                    {r.description ?? t.openSource.noDescription}
+                    {r.description}
                   </span>
                   <span className="col-start-2 flex items-center gap-4 text-[0.78rem] text-cream-500 md:col-start-auto md:justify-end">
                     {r.language && (

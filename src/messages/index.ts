@@ -167,7 +167,6 @@ const t = {
     title: "From notebook to repository.",
     intro: "A selection of my public repositories — from neural nets built from scratch to embedded systems.",
     profile: "View GitHub profile",
-    noDescription: "No description — the code speaks for itself.",
     contributions: "{count} contributions in the last year",
     snakeCaption: "The snake eats the commits. I write more.",
   },
