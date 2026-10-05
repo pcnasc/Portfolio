@@ -131,7 +131,7 @@ const pt: Dict = {
       "Construo sistemas que não podem falhar — trilhos de pagamento que movem as transações de um país, inteligência na borda que mantém máquinas operando em áreas sem sinal, e modelos que transformam telemetria bruta em previsão.",
     body: [
       "Sou estudante de Engenharia de Computação na FIAP e Técnico em Informática pelo SENAI, com foco em sistemas críticos de alta concorrência, arquitetura de software determinística e a intersecção entre software e hardware.",
-      "Hoje atuo na engenharia de Adquirência da SumUp, projetando serviços de baixa latência para o volume nacional de transações. Meus interesses passam por aplicações financeiras, health tech — especialmente neurotecnologia —, física aplicada e qualquer sistema onde pressão e precisão importam. É onde eu rendo melhor.",
+      "Hoje atuo na engenharia de Adquirência da SumUp, projetando serviços de baixa latência para o volume nacional de transações. Meu foco principal está em infraestrutura financeira, mas também me interesso profundamente por health tech — especialmente neurotecnologia —, física aplicada e qualquer sistema onde pressão e precisão importam. É onde eu rendo melhor.",
     ],
     facts: [
       { label: "Formação", lines: ["FIAP — Engenharia de Computação, 2023–2027", "SENAI — Técnico em Informática, 2020–2022"] },

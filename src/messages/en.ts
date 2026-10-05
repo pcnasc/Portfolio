@@ -38,7 +38,7 @@ const en: Dict = {
       "I build the systems that can't afford to fail — payment rails that move a country's transactions, edge intelligence that keeps machines running in dead zones, and models that turn raw telemetry into foresight.",
     body: [
       "I'm a Computer Engineering student at FIAP with an IT Technician diploma from SENAI, focused on high-concurrency critical systems, deterministic software architecture and the intersection between software and hardware.",
-      "Today I work on Acquiring Engineering at SumUp, designing low-latency services for nationwide transaction throughput. My interests span financial applications, health tech — neurotechnology in particular — applied physics, and any system where pressure and precision matter. That's where I do my best work.",
+      "Today I work on Acquiring Engineering at SumUp, designing low-latency services for nationwide transaction throughput. My core interest lies in financial infrastructure, but my curiosity also spans health tech — neurotechnology in particular — applied physics, and any system where pressure and precision matter. That's where I do my best work.",
     ],
     facts: [
       { label: "Education", lines: ["FIAP — B.Sc. Computer Engineering, 2023–2027", "SENAI — IT Technician, 2020–2022"] },
